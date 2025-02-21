@@ -9,11 +9,11 @@ public class PlayerManager
 
     public static PlayerManager Instance { get; } = new PlayerManager();
 
-    public void Add(S_PlayerList packet)
+    public void Add(ServerPlayerList packet)
     {
         Object obj = Resources.Load("Player");
 
-        foreach (S_PlayerList.Player p in packet.players)
+        foreach (ServerPlayerList.Player p in packet.players)
         {
             GameObject go = Object.Instantiate(obj) as GameObject;
 
@@ -34,7 +34,7 @@ public class PlayerManager
         }
     }
 
-    public void Move(S_BroadcastMove packet)
+    public void Move(ServerBroadcastMove packet)
     {
         if (_myPlayer.PlayerId == packet.playerId)
         {
@@ -50,7 +50,7 @@ public class PlayerManager
         }
     }
 
-    public void EnterGame(S_BroadcastEnterGame packet)
+    public void EnterGame(ServerBroadcastEnterGame packet)
     {
         if (packet.playerId == _myPlayer.PlayerId)
             return;
@@ -63,7 +63,7 @@ public class PlayerManager
 		_players.Add(packet.playerId, player);
 	}
 
-    public void LeaveGame(S_BroadcastLeaveGame packet)
+    public void LeaveGame(ServerBroadcastLeaveGame packet)
     {
         if (_myPlayer.PlayerId == packet.playerId)
         {

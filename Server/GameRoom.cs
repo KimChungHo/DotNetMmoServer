@@ -36,10 +36,10 @@ namespace Server
 			session.Room = this;
 
 			// 신입생한테 모든 플레이어 목록 전송
-			S_PlayerList players = new S_PlayerList();
+			ServerPlayerList players = new ServerPlayerList();
 			foreach (ClientSession s in _sessions)
 			{
-				players.players.Add(new S_PlayerList.Player()
+				players.players.Add(new ServerPlayerList.Player()
 				{
 					isSelf = (s == session),
 					playerId = s.SessionId,
@@ -51,7 +51,7 @@ namespace Server
 			session.Send(players.Write());
 
 			// 신입생 입장을 모두에게 알린다
-			S_BroadcastEnterGame enter = new S_BroadcastEnterGame();
+			ServerBroadcastEnterGame enter = new ServerBroadcastEnterGame();
 			enter.playerId = session.SessionId;
 			enter.posX = 0;
 			enter.posY = 0;
@@ -65,12 +65,12 @@ namespace Server
 			_sessions.Remove(session);
 
 			// 모두에게 알린다
-			S_BroadcastLeaveGame leave = new S_BroadcastLeaveGame();
+			ServerBroadcastLeaveGame leave = new ServerBroadcastLeaveGame();
 			leave.playerId = session.SessionId;
 			Broadcast(leave.Write());
 		}
 
-		public void Move(ClientSession session, C_Move packet)
+		public void Move(ClientSession session, ClientMove packet)
 		{
 			// 좌표 바꿔주고
 			session.PosX = packet.posX;
@@ -78,7 +78,7 @@ namespace Server
 			session.PosZ = packet.posZ;
 
 			// 모두에게 알린다
-			S_BroadcastMove move = new S_BroadcastMove();
+			ServerBroadcastMove move = new ServerBroadcastMove();
 			move.playerId = session.SessionId;
 			move.posX = session.PosX;
 			move.posY = session.PosY;

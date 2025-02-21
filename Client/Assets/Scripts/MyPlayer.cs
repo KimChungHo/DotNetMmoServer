@@ -23,7 +23,7 @@ public class MyPlayer : Player
 		{
 			yield return new WaitForSeconds(0.25f);
 
-			C_Move movePacket = new C_Move();
+			ClientMove movePacket = new ClientMove();
 			movePacket.posX = UnityEngine.Random.Range(-50, 50);
 			movePacket.posY = 0;
 			movePacket.posZ = UnityEngine.Random.Range(-50, 50);

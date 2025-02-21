@@ -4,10 +4,15 @@ using System.Collections.Generic;
 
 public class PacketManager
 {
-	#region Singleton
 	static PacketManager _instance = new PacketManager();
-	public static PacketManager Instance { get { return _instance; } }
-	#endregion
+
+	public static PacketManager Instance
+	{
+		get
+		{
+			return _instance;
+		}
+	}
 
 	PacketManager()
 	{
@@ -19,10 +24,18 @@ public class PacketManager
 		
 	public void Register()
 	{
-		_makeFunc.Add((ushort)PacketID.C_LeaveGame, MakePacket<C_LeaveGame>);
-		_handler.Add((ushort)PacketID.C_LeaveGame, PacketHandler.C_LeaveGameHandler);
-		_makeFunc.Add((ushort)PacketID.C_Move, MakePacket<C_Move>);
-		_handler.Add((ushort)PacketID.C_Move, PacketHandler.C_MoveHandler);
+		_makeFunc.Add((ushort)PacketID.ServerBroadcastEnterGame, MakePacket<ServerBroadcastEnterGame>);
+		//_handler.Add((ushort)PacketID.ServerBroadcastEnterGame, PacketHandler.ServerBroadcastEnterGameHandler);
+		_makeFunc.Add((ushort)PacketID.ClientLeaveGame, MakePacket<ClientLeaveGame>);
+		_handler.Add((ushort)PacketID.ClientLeaveGame, PacketHandler.ClientLeaveGameHandler);
+		_makeFunc.Add((ushort)PacketID.ServerBroadcastLeaveGame, MakePacket<ServerBroadcastLeaveGame>);
+		//_handler.Add((ushort)PacketID.ServerBroadcastLeaveGame, PacketHandler.ServerBroadcastLeaveGameHandler);
+		_makeFunc.Add((ushort)PacketID.ServerPlayerList, MakePacket<ServerPlayerList>);
+		//_handler.Add((ushort)PacketID.ServerPlayerList, PacketHandler.ServerPlayerListHandler);
+		_makeFunc.Add((ushort)PacketID.ClientMove, MakePacket<ClientMove>);
+		_handler.Add((ushort)PacketID.ClientMove, PacketHandler.ClientMoveHandler);
+		_makeFunc.Add((ushort)PacketID.ServerBroadcastMove, MakePacket<ServerBroadcastMove>);
+		//_handler.Add((ushort)PacketID.ServerBroadcastMove, PacketHandler.ServerBroadcastMoveHandler);
 
 	}
 
