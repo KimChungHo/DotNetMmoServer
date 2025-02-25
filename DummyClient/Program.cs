@@ -7,8 +7,6 @@ using System.Threading;
 
 namespace DummyClient
 {
-	
-
 	class Program
 	{
 		static void Main(string[] args)
@@ -18,12 +16,9 @@ namespace DummyClient
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
 			IPAddress ipAddr = ipHost.AddressList[0];
 			IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
-
 			Connector connector = new Connector();
 
-			connector.Connect(endPoint, 
-				() => { return SessionManager.Instance.Generate(); },
-				1);
+			connector.Connect(endPoint, () => { return SessionManager.Instance.Generate(); }, 0);
 
 			while (true)
 			{

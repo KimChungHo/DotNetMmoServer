@@ -7,7 +7,6 @@ namespace DummyClient
 	class SessionManager
 	{
 		public static SessionManager Instance { get { return _session; } }
-
 		static SessionManager _session = new SessionManager();
 
 		List<ServerSession> _sessions = new List<ServerSession>();

@@ -8,7 +8,7 @@ public class MyPlayer : Player
 
 	void Start()
     {
-		StartCoroutine("CoSendPacket");
+		StartCoroutine(nameof(CoSendPacket));
 		_network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
 	}
 
