@@ -1,4 +1,4 @@
-﻿using ServerCore;
+using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -73,9 +73,12 @@ namespace Server
 		public void Move(ClientSession session, ClientMove packet)
 		{
 			// 좌표 바꿔주고
-			session.PosX = packet.posX;
-			session.PosY = packet.posY;
-			session.PosZ = packet.posZ;
+			if(session.SessionId != 1)
+			{
+				session.PosX = packet.posX;
+				session.PosY = packet.posY;
+				session.PosZ = packet.posZ;
+			}
 
 			// 모두에게 알린다
 			ServerBroadcastMove move = new ServerBroadcastMove();
