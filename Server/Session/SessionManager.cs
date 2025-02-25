@@ -6,12 +6,12 @@ namespace Server
 {
 	class SessionManager
 	{
-		static SessionManager _session = new SessionManager();
+		private static SessionManager _session = new SessionManager();
 		public static SessionManager Instance { get { return _session; } }
 
-		int _sessionId = 0;
-		Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>();
-		object _lock = new object();
+		private int _sessionId = 0;
+		private Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>();
+		private object _lock = new object();
 
 		public ClientSession Generate()
 		{
@@ -35,6 +35,7 @@ namespace Server
 			{
 				ClientSession session = null;
 				_sessions.TryGetValue(id, out session);
+
 				return session;
 			}
 		}

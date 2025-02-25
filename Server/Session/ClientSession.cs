@@ -11,8 +11,9 @@ namespace Server
 {
 	class ClientSession : PacketSession
 	{
-		public int SessionId { get; set; }
 		public GameRoom Room { get; set; }
+
+		public int SessionId { get; set; }
 		public float PosX { get; set; }
 		public float PosY { get; set; }
 		public float PosZ { get; set; }
@@ -32,7 +33,8 @@ namespace Server
 		public override void OnDisconnected(EndPoint endPoint)
 		{
 			SessionManager.Instance.Remove(this);
-			if (Room != null)
+
+			if(Room != null)
 			{
 				GameRoom room = Room;
 				room.Push(() => room.Leave(this));

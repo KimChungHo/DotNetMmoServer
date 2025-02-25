@@ -20,13 +20,13 @@ namespace DummyClient
 
 			connector.Connect(endPoint, () => { return SessionManager.Instance.Generate(); }, 0);
 
-			while (true)
+			while(true)
 			{
 				try
 				{
 					SessionManager.Instance.SendForEach();
 				}
-				catch (Exception e)
+				catch(Exception e)
 				{
 					Console.WriteLine(e.ToString());
 				}

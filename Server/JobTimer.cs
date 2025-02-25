@@ -18,10 +18,10 @@ namespace Server
 
 	class JobTimer
 	{
-		PriorityQueue<JobTimerElem> _pq = new PriorityQueue<JobTimerElem>();
-		object _lock = new object();
-
 		public static JobTimer Instance { get; } = new JobTimer();
+
+		private PriorityQueue<JobTimerElem> _pq = new PriorityQueue<JobTimerElem>();
+		private object _lock = new object();
 
 		public void Push(Action action, int tickAfter = 0)
 		{
@@ -29,7 +29,7 @@ namespace Server
 			job.execTick = System.Environment.TickCount + tickAfter;
 			job.action = action;
 
-			lock (_lock)
+			lock(_lock)
 			{
 				_pq.Push(job);
 			}
@@ -37,20 +37,25 @@ namespace Server
 
 		public void Flush()
 		{
-			while (true)
+			while(true)
 			{
 				int now = System.Environment.TickCount;
 
 				JobTimerElem job;
 
-				lock (_lock)
+				lock(_lock)
 				{
-					if (_pq.Count == 0)
+					if(_pq.Count == 0)
+					{
 						break;
+					}
 
 					job = _pq.Peek();
-					if (job.execTick > now)
+
+					if(job.execTick > now)
+					{
 						break;
+					}
 
 					_pq.Pop();
 				}

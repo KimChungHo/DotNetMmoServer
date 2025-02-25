@@ -12,7 +12,7 @@ public enum PacketID
 	ServerPlayerList = 4,
 	ClientMove = 5,
 	ServerBroadcastMove = 6,
-	
+
 }
 
 public interface IPacket
@@ -72,7 +72,7 @@ public class ServerBroadcastEnterGame : IPacket
 
 public class ClientLeaveGame : IPacket
 {
-	
+
 
 	public ushort Protocol { get { return (ushort)PacketID.ClientLeaveGame; } }
 
@@ -81,7 +81,7 @@ public class ClientLeaveGame : IPacket
 		ushort count = 0;
 		count += sizeof(ushort);
 		count += sizeof(ushort);
-		
+
 	}
 
 	public ArraySegment<byte> Write()
@@ -92,7 +92,7 @@ public class ClientLeaveGame : IPacket
 		count += sizeof(ushort);
 		Array.Copy(BitConverter.GetBytes((ushort)PacketID.ClientLeaveGame), 0, segment.Array, segment.Offset + count, sizeof(ushort));
 		count += sizeof(ushort);
-		
+
 
 		Array.Copy(BitConverter.GetBytes(count), 0, segment.Array, segment.Offset, sizeof(ushort));
 
@@ -141,7 +141,7 @@ public class ServerPlayerList : IPacket
 		public float posX;
 		public float posY;
 		public float posZ;
-	
+
 		public void Read(ArraySegment<byte> segment, ref ushort count)
 		{
 			this.isSelf = BitConverter.ToBoolean(segment.Array, segment.Offset + count);
@@ -155,7 +155,7 @@ public class ServerPlayerList : IPacket
 			this.posZ = BitConverter.ToSingle(segment.Array, segment.Offset + count);
 			count += sizeof(float);
 		}
-	
+
 		public bool Write(ArraySegment<byte> segment, ref ushort count)
 		{
 			bool success = true;
@@ -170,7 +170,7 @@ public class ServerPlayerList : IPacket
 			Array.Copy(BitConverter.GetBytes(this.posZ), 0, segment.Array, segment.Offset + count, sizeof(float));
 			count += sizeof(float);
 			return success;
-		}	
+		}
 	}
 	public List<Player> players = new List<Player>();
 
@@ -184,7 +184,7 @@ public class ServerPlayerList : IPacket
 		this.players.Clear();
 		ushort playerLen = BitConverter.ToUInt16(segment.Array, segment.Offset + count);
 		count += sizeof(ushort);
-		for (int i = 0; i < playerLen; i++)
+		for(int i = 0; i < playerLen; i++)
 		{
 			Player player = new Player();
 			player.Read(segment, ref count);
@@ -202,7 +202,7 @@ public class ServerPlayerList : IPacket
 		count += sizeof(ushort);
 		Array.Copy(BitConverter.GetBytes((ushort)this.players.Count), 0, segment.Array, segment.Offset + count, sizeof(ushort));
 		count += sizeof(ushort);
-		foreach (Player player in this.players)
+		foreach(Player player in this.players)
 			player.Write(segment, ref count);
 
 		Array.Copy(BitConverter.GetBytes(count), 0, segment.Array, segment.Offset, sizeof(ushort));

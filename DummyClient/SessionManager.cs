@@ -7,18 +7,17 @@ namespace DummyClient
 	class SessionManager
 	{
 		public static SessionManager Instance { get { return _session; } }
-		static SessionManager _session = new SessionManager();
 
-		List<ServerSession> _sessions = new List<ServerSession>();
-		Random _rand = new Random();
-
-		object _lock = new object();
+		private static SessionManager _session = new SessionManager();
+		private List<ServerSession> _sessions = new List<ServerSession>();
+		private Random _rand = new Random();
+		private object _lock = new object();
 
 		public void SendForEach()
 		{
-			lock (_lock)
+			lock(_lock)
 			{
-				foreach (ServerSession session in _sessions)
+				foreach(ServerSession session in _sessions)
 				{
 					ClientMove movePacket = new ClientMove();
 					movePacket.posX = _rand.Next(-50, 50);
@@ -31,10 +30,11 @@ namespace DummyClient
 
 		public ServerSession Generate()
 		{
-			lock (_lock)
+			lock(_lock)
 			{
 				ServerSession session = new ServerSession();
 				_sessions.Add(session);
+
 				return session;
 			}
 		}

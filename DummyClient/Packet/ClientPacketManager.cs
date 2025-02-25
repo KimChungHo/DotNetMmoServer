@@ -4,18 +4,24 @@ using System.Collections.Generic;
 
 public class PacketManager
 {
-	public static PacketManager Instance { get { return _instance; } }
+	public static PacketManager Instance
+	{
+		get
+		{
+			return _instance;
+		}
+	}
 
-	static PacketManager _instance = new PacketManager();
+	private static PacketManager _instance = new PacketManager();
 
-	PacketManager()
+	private PacketManager()
 	{
 		Register();
 	}
 
-	Dictionary<ushort, Func<PacketSession, ArraySegment<byte>, IPacket>> _makeFunc = new Dictionary<ushort, Func<PacketSession, ArraySegment<byte>, IPacket>>();
-	Dictionary<ushort, Action<PacketSession, IPacket>> _handler = new Dictionary<ushort, Action<PacketSession, IPacket>>();
-		
+	private Dictionary<ushort, Func<PacketSession, ArraySegment<byte>, IPacket>> _makeFunc = new Dictionary<ushort, Func<PacketSession, ArraySegment<byte>, IPacket>>();
+	private Dictionary<ushort, Action<PacketSession, IPacket>> _handler = new Dictionary<ushort, Action<PacketSession, IPacket>>();
+
 	public void Register()
 	{
 		_makeFunc.Add((ushort)PacketID.ServerBroadcastEnterGame, MakePacket<ServerBroadcastEnterGame>);
@@ -38,27 +44,37 @@ public class PacketManager
 		count += 2;
 
 		Func<PacketSession, ArraySegment<byte>, IPacket> func = null;
-		if (_makeFunc.TryGetValue(id, out func))
+
+		if(_makeFunc.TryGetValue(id, out func))
 		{
 			IPacket packet = func.Invoke(session, buffer);
-			if (onRecvCallback != null)
+
+			if(onRecvCallback != null)
+			{
 				onRecvCallback.Invoke(session, packet);
+			}
 			else
+			{
 				HandlePacket(session, packet);
+			}
 		}
 	}
 
-	T MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
+	private T MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
 	{
-		T pkt = new T();
-		pkt.Read(buffer);
-		return pkt;
+		T pakcet = new T();
+		pakcet.Read(buffer);
+
+		return pakcet;
 	}
 
 	public void HandlePacket(PacketSession session, IPacket packet)
 	{
 		Action<PacketSession, IPacket> action = null;
-		if (_handler.TryGetValue(packet.Protocol, out action))
+
+		if(_handler.TryGetValue(packet.Protocol, out action))
+		{
 			action.Invoke(session, packet);
+		}
 	}
 }

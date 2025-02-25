@@ -10,8 +10,10 @@ class PacketHandler
 	{
 		ClientSession clientSession = session as ClientSession;
 
-		if (clientSession.Room == null)
+		if(clientSession.Room == null)
+		{
 			return;
+		}
 
 		GameRoom room = clientSession.Room;
 		room.Push(() => room.Leave(clientSession));
@@ -22,8 +24,10 @@ class PacketHandler
 		ClientMove movePacket = packet as ClientMove;
 		ClientSession clientSession = session as ClientSession;
 
-		if (clientSession.Room == null)
+		if(clientSession.Room == null)
+		{
 			return;
+		}
 
 		GameRoom room = clientSession.Room;
 		room.Push(() => room.Move(clientSession, movePacket));

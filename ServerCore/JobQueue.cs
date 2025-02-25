@@ -4,53 +4,58 @@ using System.Text;
 
 namespace ServerCore
 {
-	public interface IJobQueue
-	{
-		void Push(Action job);
-	}
-
 	public class JobQueue : IJobQueue
 	{
-		Queue<Action> _jobQueue = new Queue<Action>();
-		object _lock = new object();
-		bool _flush = false;
+		private Queue<Action> _jobQueue = new Queue<Action>();
+		private object _lock = new object();
+		private bool _flush = false;
 
 		public void Push(Action job)
 		{
 			bool flush = false;
 
-			lock (_lock)
+			lock(_lock)
 			{
 				_jobQueue.Enqueue(job);
-				if (_flush == false)
+
+				if(_flush == false)
+				{
 					flush = _flush = true;
+				}
 			}
 
-			if (flush)
+			if(flush)
+			{
 				Flush();
+			}
 		}
 
-		void Flush()
+		private void Flush()
 		{
-			while (true)
+			while(true)
 			{
 				Action action = Pop();
-				if (action == null)
+
+				if(action == null)
+				{
 					return;
+				}
 
 				action.Invoke();
 			}
 		}
 
-		Action Pop()
+		private Action Pop()
 		{
-			lock (_lock)
+			lock(_lock)
 			{
-				if (_jobQueue.Count == 0)
+				if(_jobQueue.Count == 0)
 				{
 					_flush = false;
+
 					return null;
 				}
+
 				return _jobQueue.Dequeue();
 			}
 		}

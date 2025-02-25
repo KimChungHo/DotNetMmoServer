@@ -11,7 +11,7 @@ namespace Server
 {
 	class Program
 	{
-		static Listener _listener = new Listener();
+		private static Listener _listener = new Listener();
 		public static GameRoom Room = new GameRoom();
 
 		static void FlushRoom()
@@ -34,7 +34,7 @@ namespace Server
 			//FlushRoom();
 			JobTimer.Instance.Push(FlushRoom);
 
-			while (true)
+			while(true)
 			{
 				JobTimer.Instance.Flush();
 			}
