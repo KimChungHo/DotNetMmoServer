@@ -73,7 +73,7 @@ namespace Server
 		public void Move(ClientSession session, ClientMove packet)
 		{
 			// 좌표 바꿔주고
-			if(session.SessionId != 1)
+			if(session.SessionId == 1)
 			{
 				session.PosX = packet.posX;
 				session.PosY = packet.posY;
